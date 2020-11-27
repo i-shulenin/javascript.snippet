@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const types = [
   {typeId: '1', typeName: 'Начало заправки'},
   {typeId: '2', typeName: 'Окончание заправки'},
@@ -39,3 +41,17 @@ const data = [
     deletedAt: null,
   }
 ];
+
+const event = data.map((item) => [
+  (item.accounts.length) ? item.accounts.join(', ') : 'Все аккаунты',
+  (item.vehicles.length) ? item.vehicles.join(', ') : 'Все ТС',
+  (item.types.length) ? item.types.map((type) => (types.find((t) => t.typeId == type)).typeName) : 'Все типы',
+  moment(item.intervalBegin * 1000).format('lll'),
+  moment(item.intervalEnd * 1000).format('lll'),
+  moment(item.createdAt.date).format('lll'),
+  (item.updatedAt && item.loadTime) ? moment(item.updatedAt.date).format('lll') : '',
+  (item.loadTime) ? item.loadTime : '',
+//this.domSanitizer.bypassSecurityTrustHtml(`<span class="badge ${(item.status == 'end') ? 'badge-success' : 'badge-warning'}">${(item.status == 'end') ? 'Загружено' : 'Загружается'}</span>`),
+]);
+
+console.log(event);
